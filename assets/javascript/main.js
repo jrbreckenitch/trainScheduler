@@ -10,27 +10,26 @@ var config = {
 
 firebase.initializeApp(config);
 
-//   var database = firebase.initializeApp(config);
-
 var database = firebase.database();
 
 var trainName = "";
 var destination = "";
-var firstTime = 0;
+var firstTime = "";
 var frequency = 0;
 var minutesAway = 0;
 
-// var newRow = $("<tr>").append(
-//     $("<td>").text(trainName),
-//     $("<td>").text(destination),
-//     $("<td>").text(firstTime),
-//     $("<td>").text(frequency),
-//     $("<td>").text(minutesAway),
-// );
+var currentTime = moment();
+var format = "hh:mm";
 
+// First Time (pushed back 1 year to make sure it comes before current time)
+// var firstTimeConverted = moment(firstTime, "HH:mm");
+var firstTimeConverted = moment(firstTime, format);
+console.log(firstTimeConverted.format("hh:mm"));
+console.log(currentTime.format("hh:mm"));
 
   $("#addTrain").on("click", function(){
-      
+    event.preventDefault();
+
       trainName = $("#trainInput").val().trim();
       destination = $("#destinationInput").val().trim();
       firstTime = $("#firstTimeInput").val().trim();
@@ -44,6 +43,8 @@ var minutesAway = 0;
           firstTimeLog: firstTime,
           frequencyLog: frequency
       })
+      console.log(firstTimeConverted.format("hh:mm"));
+
   })
 
 database.ref().on("child_added",function(snapshot){
@@ -54,13 +55,7 @@ database.ref().on("child_added",function(snapshot){
             $("<td>").text(snapshot.val().frequencyLog),
             // $("<td>").text(minutesAway),
     );
-    $("#tableID > tbody").append(newRow);
-})
+    $("#tableID > tbody").prepend(newRow);
 
-//   database.ref().on("value", function(snapshot){
-//       $("#trainResults").append(newRow);
-//       $("#trainResults").append(snapshot.val().trainLog);
-//       $("#trainResults").append(snapshot.val().destinationLog);
-//       $("#trainResults").append(snapshot.val().firstTimeLog);
-//       $("#trainResults").append(snapshot.val().frequencyLog);
-//   })
+    // add moment js code here
+})
