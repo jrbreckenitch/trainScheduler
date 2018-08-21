@@ -15,8 +15,6 @@ var trainName = "";
 var destination = "";
 var firstTime = "";
 var frequency = 0;
-var currentTime = moment();
-var format = "hh:mm";
 
 function clearForm() {
   trainName = $("#trainInput").val("");
@@ -45,8 +43,6 @@ function clearForm() {
 database.ref().on("child_added",function(snapshot){
     
     var firstTimeConverted = moment(snapshot.val().firstTimeLog, "HH:mm").subtract(1, "years");
-
-    currentTime = moment().format("HH:mm");
 
     var timeDifference = moment().diff(moment(firstTimeConverted), "minutes");
 
